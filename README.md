@@ -1,2 +1,4 @@
 # Blackjack
- A Blackjack card game for Praeses
+Author: Ryan Blomquist
+
+ A Blackjack card game for Praeses's job interview.
