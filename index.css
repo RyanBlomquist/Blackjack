@@ -14,4 +14,7 @@
 
 #game-over {
     display: none;
+    font-size: 5rem;
+    color: red;
+    background-color: black;
 }

@@ -5,14 +5,22 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
+        <p>Click the center deck to hit.</p>
+        <div id="game-over">
+            <p>Bust</p>
+        </div>
+        <p>
+            <span>Dealer score: </span>
+            <span id="dealer-score-display"></span>
+        </p>
         <div id="card-table"></div>
-        <p id="game-over">Game Over</p>
-        <button id="rematch">Rematch</button>
+        <button id="rematch">Next Round</button>
         <button id="reset">Reset</button>
         <p>
             <span>Player Score: </span>
             <span id="player-score-display"></span>
         </p>
+        <button id="done">Done</button>
 		<script src="jquery-1.7.min.js"></script>
 		<script src="deckType.js"></script>
 		<script src="cards.js"></script>
