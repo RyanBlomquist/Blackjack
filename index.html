@@ -7,18 +7,26 @@
     <body>
         <p>Click the center deck to hit.</p>
         <div id="game-over">
-            <p>Bust</p>
+            <p>You Lose</p>
         </div>
+        <div id="card-table"></div>
+        <button id="next-round">Next Round</button>
+        <button id="reset">Reset</button>
         <p>
             <span>Dealer score: </span>
             <span id="dealer-score-display"></span>
         </p>
-        <div id="card-table"></div>
-        <button id="rematch">Next Round</button>
-        <button id="reset">Reset</button>
         <p>
-            <span>Player Score: </span>
+            <span>Your Score: </span>
             <span id="player-score-display"></span>
+        </p>
+        <p>
+            <span>Your Win Count:</span>
+            <span id="player-win-count"></span>
+        </p>
+        <p>
+            <span>Dealer Win Count:</span>
+            <span id="dealer-win-count"></span>
         </p>
         <button id="done">Done</button>
 		<script src="jquery-1.7.min.js"></script>

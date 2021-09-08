@@ -3,14 +3,16 @@ cards.init({table:'#card-table', type:STANDARD});
 let deck;
 let playerhand;
 let faceUpDealerHand;
+let playerWinCount = 0;
+let dealerWinCount = 0;
 const DEALER_DECK_Y = 60;
 const DEALER_DECK_X = 255;
 startGame();
 
 function startGame() {
     deck = new cards.Deck();
-    cards.shuffle(deck);
     deck.addCards(cards.all);
+    cards.shuffle(deck);
     deck.render({immediate:true});
     faceUpDealerHand = new cards.Hand({
         faceUp:true
@@ -24,7 +26,7 @@ function startGame() {
     playerhand = new cards.Hand({faceUp:true, y:340});
 
     deck.deal(2, [playerhand], 50, () => {
-        decideResult(playerhand);
+        decidePlayerHitResult();
     });
 
     deck.deal(1, [faceUpDealerHand, faceDownDealerHand], 50);
@@ -32,24 +34,60 @@ function startGame() {
     deck.click(card => {
         playerhand.addCard(card);
         playerhand.render();
-        decideResult(playerhand);
+        decidePlayerHitResult();
     });
 }
 
+$('#next-round').click(() => {
+    $('#game-over').hide();
+    $('#dealer-score-display').text('');
+    startGame();
+});
+
 $('#reset').click(() => {
     $('#game-over').hide();
+    playerWinCount = 0;
+    dealerWinCount = 0;
     startGame();
 });
 
 $('#done').click(() => {
     faceDownDealerHand.faceUp = true;
     faceDownDealerHand.render();
-    determineGameOutcome();
+    playerDone();
 });
 
-function determineGameOutcome() {
-    let dealerScore = calculateDealerScore();
+function playerDone() {
+    let dealerScore = playDealer();
+    let playerScore = calculateScore(playerhand);
+    if (playerScore <= 21 && (playerScore > dealerScore || dealerScore > 21)) {
+        playerWon();
+    }
+    else {
+        gameOver();
+    }
+}
 
+function playDealer() {
+    score = calculateDealerScore();
+    let tempHand = new cards.Hand();
+    let tempScores = [];
+    while (score < 17) {
+        score += deck.topCard().rank;
+        tempHand.addCard(deck.topCard());
+        tempScores.push(score);
+    }
+    for (let i = 0; i < tempHand.length; i++) {
+        setTimeout(function() {
+            faceDownDealerHand.addCard(tempHand[0]);
+            faceDownDealerHand.render();
+            $('#dealer-score-display').text(tempScores[i]);
+        }, 1000 * (i + 1));
+    }
+    if (tempHand.length == 0) {
+        $('#dealer-score-display').text(score);
+    }
+    return score
 }
 
 function calculateDealerScore() {
@@ -63,27 +101,14 @@ function calculateDealerScore() {
     }
     tempHand["length"] = i;
     let score = calculateScore(tempHand);
-    let k = 1;
-    while (score < 17) {
-        score += deck.topCard().rank;
-        setTimeout(function() {
-            faceDownDealerHand.addCard(deck.topCard());
-            faceDownDealerHand.render();
-            $('#dealer-score-display').text(score);
-        }, 1000 * k);
-        k++;
-    }
     return score;
 }
 
-function decideResult(hand) {
-    let score = calculateScore(hand);
-    console.log(score);
-    if (hand === playerhand) {
-        $('#player-score-display').text(score);
-        if (score > 21) {
-            gameOver();
-        }
+function decidePlayerHitResult() {
+    let score = calculateScore(playerhand);
+    $('#player-score-display').text(score);
+    if (score > 21) {
+        gameOver();
     }
 }
 
@@ -123,9 +148,17 @@ function calculateScore(hand) {
 }
 
 function gameOver() {
-    $('#game-over').show();
+    // $('#game-over').show();
     faceDownDealerHand.faceUp = true;
     faceDownDealerHand.render();
     deck.click(() => {});
-    $('#dealer-score-display').text(calculateDealerScore(faceUpDealerHand));
+    $('#dealer-score-display').text(calculateDealerScore());
+    dealerWinCount++;
+    $('#dealer-win-count').text(dealerWinCount);
+}
+
+function playerWon() {
+    playerWinCount++;
+    $('#player-win-count').text(playerWinCount);
+    deck.click(() => {});
 }
