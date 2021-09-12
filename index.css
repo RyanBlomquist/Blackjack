@@ -1,20 +1,47 @@
 /* This style taken from card.js example by Einar Egilsson */
 #card-table {
-    background-color:green;
-    height:400px;
-    width:600px;
-    border:solid 6px brown;
-    border-radius:8px;
+    grid-column: 1;
+    grid-row: 1;
+    border-radius: 8px;
     -webkit-border-radius:8px;
     -moz-border-radius:8px;
     -ms-border-radius:8px;
     -o-border-radius:8px;
+    background-color:green;
+    border:solid 6px brown;
     box-shadow:#111 1px 1px 2px;
 }
 
-#game-over {
-    display: none;
-    font-size: 5rem;
-    color: red;
-    background-color: black;
+#game-container {
+    display: grid;
+    height:400px;
+    width:600px;
+}
+
+#round-over {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(128, 128, 128, 0.8);
+    border-radius: 8px;
+    -webkit-border-radius:8px;
+    -moz-border-radius:8px;
+    -ms-border-radius:8px;
+    -o-border-radius:8px;
+    align-items: center;
+}
+
+#next-round{
+    margin-bottom: 50%;
+}
+
+#game-result {
+    text-align: center;
+}
+
+body {
+    margin:auto;
+    max-width: 600px;
 }

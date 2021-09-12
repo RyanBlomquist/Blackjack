@@ -39,8 +39,8 @@ function startGame() {
 }
 
 $('#next-round').click(() => {
-    $('#game-over').hide();
     $('#dealer-score-display').text('');
+    $('#round-over').css('z-index', 0);
     startGame();
 });
 
@@ -48,6 +48,8 @@ $('#reset').click(() => {
     $('#game-over').hide();
     playerWinCount = 0;
     dealerWinCount = 0;
+    $('#dealer-win-count').text(dealerWinCount);
+    $('#player-win-count').text(playerWinCount);
     startGame();
 });
 
@@ -58,14 +60,18 @@ $('#done').click(() => {
 });
 
 function playerDone() {
-    let dealerScore = playDealer();
+    let dealerResult = playDealer();
+    let dealerScore = dealerResult.score;
     let playerScore = calculateScore(playerhand);
     if (playerScore <= 21 && (playerScore > dealerScore || dealerScore > 21)) {
         playerWon();
     }
     else {
-        gameOver();
+        playerLost();
     }
+    setTimeout(function() {
+        $('#round-over').css('z-index', 1000);
+    }, 1000 * dealerResult.timeout);
 }
 
 function playDealer() {
@@ -77,17 +83,19 @@ function playDealer() {
         tempHand.addCard(deck.topCard());
         tempScores.push(score);
     }
+    let j = 0;
     for (let i = 0; i < tempHand.length; i++) {
         setTimeout(function() {
             faceDownDealerHand.addCard(tempHand[0]);
             faceDownDealerHand.render();
             $('#dealer-score-display').text(tempScores[i]);
         }, 1000 * (i + 1));
+        j = i + 1;
     }
     if (tempHand.length == 0) {
         $('#dealer-score-display').text(score);
     }
-    return score
+    return { score: score, timeout: j }
 }
 
 function calculateDealerScore() {
@@ -108,7 +116,8 @@ function decidePlayerHitResult() {
     let score = calculateScore(playerhand);
     $('#player-score-display').text(score);
     if (score > 21) {
-        gameOver();
+        playerLost();
+        $('#round-over').css('z-index', 1000);
     }
 }
 
@@ -147,11 +156,11 @@ function calculateScore(hand) {
     }
 }
 
-function gameOver() {
-    // $('#game-over').show();
+function playerLost() {
     faceDownDealerHand.faceUp = true;
     faceDownDealerHand.render();
     deck.click(() => {});
+    $('#game-result').text('You Lost').css('color', 'red');
     $('#dealer-score-display').text(calculateDealerScore());
     dealerWinCount++;
     $('#dealer-win-count').text(dealerWinCount);
@@ -160,5 +169,6 @@ function gameOver() {
 function playerWon() {
     playerWinCount++;
     $('#player-win-count').text(playerWinCount);
+    $('#game-result').text('You Won').css('color', 'blue');
     deck.click(() => {});
 }
