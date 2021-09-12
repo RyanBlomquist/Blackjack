@@ -101,10 +101,12 @@ function playDealer() {
     //display them later.
     function setDisplayUpdateTime(index) {
         setTimeout(function() {
+            //using the addCard function removes the card from the other hand, 
+            //so we use 0 below instead of index.
             faceDownDealerHand.addCard(tempHand[0]);
             faceDownDealerHand.render();
             $('#dealer-score-display').text(tempScores[index]);
-        }, 1000 * (index + 1));
+        }, 1000 * (index + 1)); //index starts at 0 so we add 1
     }
 }
 
