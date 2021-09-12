@@ -8,14 +8,14 @@
         <h1>21 Blackjack</h1>
         <h2>Rules</h2>
         <ul>
-            <li>The goal of the game is to beat the dealer and get as high a score as possible without exceeding 21.</li>
-            <li>Number cards are scored equal to their value, and face cards are worth 10 points.</li>
+            <li>The goal of the game is to beat the house and get as high a score as possible without exceeding 21.</li>
+            <li>Number cards are scored equal to their value and face cards are worth 10 points.</li>
             <li>Aces are worth 1 or 11 points.  They are scored as 11 points until your score exceeds 21, at which point they will be scored as 1.</li>
             <li>Click the center deck to take another card.</li>
             <li>Click 'Done' when you are finished taking cards.</li>
-            <li>After you are done, the dealer will draw until their score is at least 17.</li>
-            <li>Whoever has the highest score wins the match.</li>
-            <li>The dealer wins in the event of a tie.</li>
+            <li>After you are done, the house will draw until their score is at least 17.</li>
+            <li>Whoever has the highest score less than or equal to 21 wins the match.</li>
+            <li>The house wins in the event of a tie.</li>
         </ul>
         <h2>Game</h2>
         <p>Click the center deck to take another card.</p>
@@ -30,7 +30,7 @@
         <button id="done">Done</button>
         <button id="reset">Reset</button>
         <p>
-            <span>Dealer score: </span>
+            <span>House score: </span>
             <span id="dealer-score-display"></span>
         </p>
         <p>
@@ -42,7 +42,7 @@
             <span id="player-win-count"></span>
         </p>
         <p>
-            <span>Dealer Win Count:</span>
+            <span>House Win Count:</span>
             <span id="dealer-win-count"></span>
         </p>
 		<script src="jquery-1.7.min.js"></script>

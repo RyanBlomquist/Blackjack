@@ -45,7 +45,6 @@ $('#next-round').click(() => {
 });
 
 $('#reset').click(() => {
-    $('#game-over').hide();
     playerWinCount = 0;
     dealerWinCount = 0;
     $('#dealer-win-count').text(dealerWinCount);
@@ -91,6 +90,7 @@ function playDealer() {
 
     function drawCard(index) {
         score += deck.topCard().rank;
+        //Store the values for display later.
         tempHand.addCard(deck.topCard());
         tempScores.push(score);
         setDisplayUpdateTime(index);
@@ -118,8 +118,7 @@ function calculateDealerScore() {
         i++;
     }
     tempHand["length"] = i;
-    let score = calculateScore(tempHand);
-    return score;
+    return calculateScore(tempHand);
 }
 
 function decidePlayerHitResult() {
