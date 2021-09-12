@@ -16,6 +16,7 @@
     display: grid;
     height:400px;
     width:600px;
+    margin-bottom: 1.2rem;
 }
 
 #round-over {
@@ -35,10 +36,13 @@
 
 #next-round{
     margin-bottom: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 #game-result {
     text-align: center;
+    font-size: 5rem;
 }
 
 body {

@@ -95,7 +95,7 @@ function playDealer() {
     if (tempHand.length == 0) {
         $('#dealer-score-display').text(score);
     }
-    return { score: score, timeout: j }
+    return { score: score, timeout: j + 1 }
 }
 
 function calculateDealerScore() {
