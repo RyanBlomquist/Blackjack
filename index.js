@@ -63,14 +63,15 @@ function playerDone() {
     let dealerResult = playDealer();
     let dealerScore = dealerResult.score;
     let playerScore = calculateScore(playerhand);
-    if (playerScore <= 21 && (playerScore > dealerScore || dealerScore > 21)) {
-        playerWon();
-    }
-    else {
-        playerLost();
-    }
     setTimeout(function() {
-        $('#round-over').css('z-index', 1000);
+        deck.click(() => {});
+        if (playerScore <= 21 && (playerScore > dealerScore || dealerScore > 21)) {
+            playerWon();
+        }
+        else {
+            playerLost();
+        }
+        $('#round-over').css('z-index', cards.getZIndexCounter() + 1);
     }, 1000 * dealerResult.timeout);
 }
 
@@ -159,7 +160,6 @@ function calculateScore(hand) {
 function playerLost() {
     faceDownDealerHand.faceUp = true;
     faceDownDealerHand.render();
-    deck.click(() => {});
     $('#game-result').text('You Lost').css('color', 'red');
     $('#dealer-score-display').text(calculateDealerScore());
     dealerWinCount++;
@@ -170,5 +170,4 @@ function playerWon() {
     playerWinCount++;
     $('#player-win-count').text(playerWinCount);
     $('#game-result').text('You Won').css('color', 'blue');
-    deck.click(() => {});
 }

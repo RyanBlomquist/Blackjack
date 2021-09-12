@@ -22,6 +22,10 @@ var cards = (function() {
   var start = 1;
   var end = start + 12;
 
+  function getZIndexCounter() {
+    return zIndexCounter;
+  }
+  
   function mouseEvent(ev) {
     var card = $(this).data('card');
     if (card.container) {
@@ -377,6 +381,7 @@ var cards = (function() {
   return {
     init: init,
     all: all,
+    getZIndexCounter: getZIndexCounter,
     options: opt,
     SIZE: opt.cardSize,
     Card: Card,
