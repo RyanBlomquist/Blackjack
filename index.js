@@ -71,7 +71,7 @@ function playerDone() {
         else {
             playerLost();
         }
-        $('#round-over').css('z-index', cards.getZIndexCounter() + 1);
+        $('#round-over').css('z-index', getTopZIndex());
     }, 1000 * dealerResult.timeout);
 }
 
@@ -79,24 +79,33 @@ function playDealer() {
     score = calculateDealerScore();
     let tempHand = new cards.Hand();
     let tempScores = [];
+    let i = 0;
     while (score < 17) {
-        score += deck.topCard().rank;
-        tempHand.addCard(deck.topCard());
-        tempScores.push(score);
-    }
-    let j = 0;
-    for (let i = 0; i < tempHand.length; i++) {
-        setTimeout(function() {
-            faceDownDealerHand.addCard(tempHand[0]);
-            faceDownDealerHand.render();
-            $('#dealer-score-display').text(tempScores[i]);
-        }, 1000 * (i + 1));
-        j = i + 1;
+        drawCard(i); //pass i so function has the value, instead of the variable.
+        i++;
     }
     if (tempHand.length == 0) {
         $('#dealer-score-display').text(score);
     }
-    return { score: score, timeout: j + 1 }
+    return { score: score, timeout: i + 1 }
+
+    function drawCard(index) {
+        score += deck.topCard().rank;
+        tempHand.addCard(deck.topCard());
+        tempScores.push(score);
+        setDisplayUpdateTime(index);
+    }
+    
+    //setTimeout does not stop the program from executing, so to display 
+    //things at human speed we need to store the values at each step and
+    //display them later.
+    function setDisplayUpdateTime(index) {
+        setTimeout(function() {
+            faceDownDealerHand.addCard(tempHand[0]);
+            faceDownDealerHand.render();
+            $('#dealer-score-display').text(tempScores[index]);
+        }, 1000 * (index + 1));
+    }
 }
 
 function calculateDealerScore() {
@@ -118,7 +127,7 @@ function decidePlayerHitResult() {
     $('#player-score-display').text(score);
     if (score > 21) {
         playerLost();
-        $('#round-over').css('z-index', 1000);
+        $('#round-over').css('z-index', getTopZIndex());
     }
 }
 
@@ -155,6 +164,10 @@ function calculateScore(hand) {
             i++;
         }
     }
+}
+
+function getTopZIndex() {
+    return cards.getZIndexCounter() + 1;
 }
 
 function playerLost() {

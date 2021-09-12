@@ -1,4 +1,4 @@
-
+//Author: Einar Egilsson.
 var cards = (function() {
   //The global options
   var opt = {
