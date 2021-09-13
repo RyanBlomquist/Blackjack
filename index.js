@@ -84,7 +84,7 @@ function playDealer() {
         drawCard(i); //pass i so function has the value, instead of the variable.
         i++;
     }
-    //Update score display in case dealer's score is already >17.
+    //Update score display when dealer's score is already >17.
     if (tempHand.length == originalHandEndIndex) {
         $('#dealer-score-display').text(score);
     }
