@@ -75,23 +75,24 @@ function playerDone() {
 }
 
 function playDealer() {
-    score = calculateDealerScore();
-    let tempHand = new cards.Hand();
+    let tempHand = combineDealerHands();
+    let score = calculateScore(tempHand);
+    let originalHandEndIndex = tempHand.length;
     let tempScores = [];
     let i = 0;
     while (score < 17) {
         drawCard(i); //pass i so function has the value, instead of the variable.
         i++;
     }
-    if (tempHand.length == 0) {
+    //Update score display in case dealer's score is already >17.
+    if (tempHand.length == originalHandEndIndex) {
         $('#dealer-score-display').text(score);
     }
     return { score: score, timeout: i + 1 }
 
     function drawCard(index) {
-        score += deck.topCard().rank;
-        //Store the values for display later.
         tempHand.addCard(deck.topCard());
+        score = calculateScore(tempHand);
         tempScores.push(score);
         setDisplayUpdateTime(index);
     }
@@ -102,8 +103,9 @@ function playDealer() {
     function setDisplayUpdateTime(index) {
         setTimeout(function() {
             //using the addCard function removes the card from the other hand, 
-            //so we use 0 below instead of index.
-            faceDownDealerHand.addCard(tempHand[0]);
+            //and downshifts its remaining cards, so we can use the same index
+            //each time.
+            faceDownDealerHand.addCard(tempHand[originalHandEndIndex]);
             faceDownDealerHand.render();
             $('#dealer-score-display').text(tempScores[index]);
         }, 1000 * (index + 1)); //index starts at 0 so we add 1
@@ -111,16 +113,20 @@ function playDealer() {
 }
 
 function calculateDealerScore() {
-    tempHand = new cards.Hand();
+    return calculateScore(combineDealerHands());
+}
+
+function combineDealerHands() {
+    combinedHand = new cards.Hand();
     let i = 0;
-    tempHand[i] = faceUpDealerHand[i];
+    combinedHand[i] = faceUpDealerHand[i]; //faceUpDealerHand always has just 1 card.
     i++;
     for (let j = 0; j < faceDownDealerHand.length; j++) {
-        tempHand[i] = faceDownDealerHand[j];
+        combinedHand[i] = faceDownDealerHand[j];
         i++;
     }
-    tempHand["length"] = i;
-    return calculateScore(tempHand);
+    combinedHand["length"] = i;
+    return combinedHand;
 }
 
 function decidePlayerHitResult() {
